@@ -10,7 +10,6 @@ else:
 
 class QRNNLayer(nn.Module):
     r"""Applies a single layer Quasi-Recurrent Neural Network (QRNN) to an input sequence.
-
     Args:
         input_size: The number of expected features in the input x.
         hidden_size: The number of features in the hidden state h. If not specified, the input size is used.
@@ -19,11 +18,9 @@ class QRNNLayer(nn.Module):
         zoneout: Whether to apply zoneout (i.e. failing to update elements in the hidden state) to the hidden state updates. Default: 0.
         output_gate: If True, performs QRNN-fo (applying an output gate to the output). If False, performs QRNN-f. Default: True.
         use_cuda: If True, uses fast custom CUDA kernel. If False, uses naive for loop. Default: True.
-
     Inputs: X, hidden
         - X (seq_len, batch, input_size): tensor containing the features of the input sequence.
         - hidden (batch, hidden_size): tensor containing the initial hidden state for the QRNN.
-
     Outputs: output, h_n
         - output (seq_len, batch, hidden_size): tensor containing the output of the QRNN for each timestep.
         - h_n (batch, hidden_size): tensor containing the hidden state for t=seq_len
@@ -113,7 +110,6 @@ class QRNNLayer(nn.Module):
 
 class QRNN(torch.nn.Module):
     r"""Applies a multiple layer Quasi-Recurrent Neural Network (QRNN) to an input sequence.
-
     Args:
         input_size: The number of expected features in the input x.
         hidden_size: The number of features in the hidden state h. If not specified, the input size is used.
@@ -124,11 +120,9 @@ class QRNN(torch.nn.Module):
         zoneout: Whether to apply zoneout (i.e. failing to update elements in the hidden state) to the hidden state updates. Default: 0.
         output_gate: If True, performs QRNN-fo (applying an output gate to the output). If False, performs QRNN-f. Default: True.
         use_cuda: If True, uses fast custom CUDA kernel. If False, uses naive for loop. Default: True.
-
     Inputs: X, hidden
         - X (seq_len, batch, input_size): tensor containing the features of the input sequence.
         - hidden (layers, batch, hidden_size): tensor containing the initial hidden state for the QRNN.
-
     Outputs: output, h_n
         - output (seq_len, batch, hidden_size): tensor containing the output of the QRNN for each timestep.
         - h_n (layers, batch, hidden_size): tensor containing the hidden state for t=seq_len
@@ -197,7 +191,7 @@ if __name__ == '__main__':
     qrnn.use_cuda = False
     Z, _ = qrnn(X)
 
-    diff = (Y - Z).sum().data[0]
+    diff = (Y - Z).sum().item()
     print('Total difference between QRNN(use_cuda=True) and QRNN(use_cuda=False) results:', diff)
     assert diff < 1e-5, 'CUDA and non-CUDA QRNN layers return different results'
 
